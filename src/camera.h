@@ -16,18 +16,22 @@ public:
 
     position = target + quatRotY * (position - target);
     position = target + quatRotX * (position - target);
+    printCamera();
+
   }
 
   void move(float deltaZ)
   {
     glm::vec3 dir = glm::normalize(target - position);
     position += dir * deltaZ;
+    printCamera();
     target += dir * deltaZ;
   }
 
   void moveX(float deltaX)
   {
     position.x +=  deltaX;
+    printCamera();
     target.x += deltaX;
   }
 
@@ -36,12 +40,19 @@ public:
     // Desplazar la posición y el objetivo en el eje y
     position.y += deltaY;
     target.y += deltaY;
+    printCamera();
   }
 
   void reset()
   {
-    position = glm::vec3(0.0, 3.0, 5.0f);
-    target = glm::vec3(0.0f, 3.0f, 0.0f);
+    position = glm::vec3(3.0, 3.0, 5.0f);
+    target = glm::vec3(3.0f, 3.0f, 0.0f);
+  }
+
+  void printCamera()
+  {
+    SDL_Log("position: %f, %f, %f", position.x, position.y, position.z);
+    SDL_Log("target: %f, %f, %f", target.x, target.y, target.z);
   }
 
   glm::vec3 position;

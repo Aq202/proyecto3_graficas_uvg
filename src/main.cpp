@@ -18,7 +18,10 @@
 #include "box.h"
 #include "./materials/grass.h"
 #include "./materials/wood.h"
+#include "./materials/rock.h"
+#include "./materials/cultivation.h"
 #include "imageloader.h"
+#include "skybox.h"
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
@@ -66,7 +69,8 @@ Color castRay(const glm::vec3& rayOrigin, const glm::vec3& rayDirection, const s
     }
 
     if (!intersect.isIntersecting || recursion == MAX_RECURSION) {
-        return Color(173, 216, 230);
+        //return Color(173, 216, 230);
+        return Skybox::getColor(rayOrigin, rayDirection);
     }
 
 
@@ -111,7 +115,42 @@ Color castRay(const glm::vec3& rayOrigin, const glm::vec3& rayDirection, const s
 void setUp() {
     Material grass = {
         Color(80, 0, 0),
-        1.0,
+        0.85,
+        0.0,
+        0.50f,
+        0.0f,
+        0.0f
+    };
+    Material wood = {
+        Color(153, 120, 70),
+        0.9,
+        0.0,
+        0.50f,
+        0.0f,
+        0.0f
+    };
+
+    Material rock = {
+        Color(0, 0, 0),
+        0.7,
+        0.0,
+        1000.0f,
+        0.0f,
+        0.0f
+    };
+
+    Material polishedRock = {
+        Color(153, 120, 70),
+        0.7,
+        0.0,
+        25.0f,
+        0.2f,
+        0.0f
+    };
+
+    Material cultivation = {
+        Color(71,52,23),
+        0.9,
         0.0,
         0.50f,
         0.0f,
@@ -127,12 +166,12 @@ void setUp() {
         0.0f
     };
 
-    Material mirror = {
-        Color(255, 255, 255),
-        0.0f,
+    Material gold = {
+        Color(228, 190, 39),
+        1.0f,
         10.0f,
-        1425.0f,
-        0.9f,
+        0.50f,
+        0.4f,
         0.0f
     };
 
@@ -143,30 +182,33 @@ void setUp() {
         1425.0f,
         0.2f,
         1.0f,
-        1.05f
+        1.1f
     };
-    Material water = {
-         Color(100,0,0),
-        0.5,
-        0.5,
-        50.0f,
-        0.4f,
-        0.5f
-    };
-    objects.push_back(new Grass(glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(5.0f, 0.3f, -5.0f), grass)); //Grama
-    objects.push_back(new Wood(glm::vec3(1.0f, 0.3f, -2.0f), glm::vec3(3.5f, 0.9f, -2.5f), grass)); // Base frontal
-    objects.push_back(new Wood(glm::vec3(1.0f, 0.9f, -2.0f), glm::vec3(1.5f, 3.0f, -2.5f), grass)); // Pilar izq frontal
-    objects.push_back(new Wood(glm::vec3(3.0f, 0.9f, -2.0f), glm::vec3(3.5f, 3.0f, -2.5f), grass)); // Pilar derecho front
-    objects.push_back(new Wood(glm::vec3(1.0f, 3.0f, -2.0f), glm::vec3(3.5f, 3.6f, -2.5f), grass)); // viga techo frontal
-    objects.push_back(new Wood(glm::vec3(1.5f, 2.0f, -2.0f), glm::vec3(3.0f, 3.0f, -2.5f), glass)); // vidrio frontal
-    objects.push_back(new Wood(glm::vec3(1.0f, 0.3f, -3.5f), glm::vec3(1.5f, 3.0f, -4.0f), grass)); // Pilar izq lateral
+  
+    objects.push_back(new Grass(glm::vec3(-4.0f, -0.2f, -1.0f), glm::vec3(9.0f, 0.3f, -5.5f), grass)); //Grama
 
-    //objects.push_back(new Sphere(glm::vec3(1.0f, 2.0f, -3.0f), 0.5, ivory));
-    //objects.push_back(new Sphere(glm::vec3(1.0f, 2.0f, 0.0f), 0.5, ivory));
-    //objects.push_back(new Sphere(glm::vec3(1.0f, -1.0f, -3.0f), 0.5, ivory));
-    //objects.push_back(new Sphere(glm::vec3(3.0f, 0.0f, -5.0f), 0.3, rubber));
-    //objects.push_back(new Sphere(glm::vec3(1.0f, -3.0f, -4.0f), 1.0f, glass));
-    //objects.push_back(new Sphere(glm::vec3(0.0f, -6.0f, -3.0f), 1.0f, glass));
+    objects.push_back(new Wood(glm::vec3(1.0f, 0.3f, -2.0f), glm::vec3(3.5f, 0.9f, -2.5f), wood)); // Base frontal
+    objects.push_back(new Wood(glm::vec3(1.0f, 0.9f, -2.0f), glm::vec3(1.5f, 3.0f, -2.5f), wood)); // Pilar izq frontal
+    objects.push_back(new Wood(glm::vec3(3.0f, 0.9f, -2.0f), glm::vec3(3.5f, 3.0f, -2.5f), wood)); // Pilar derecho front
+    objects.push_back(new Wood(glm::vec3(1.0f, 3.0f, -2.0f), glm::vec3(3.5f, 3.6f, -2.5f), wood)); // viga techo frontal
+    objects.push_back(new Wood(glm::vec3(1.5f, 2.0f, -2.0f), glm::vec3(3.0f, 3.0f, -2.5f), glass)); // vidrio frontal
+    objects.push_back(new Wood(glm::vec3(1.0f, 0.3f, -3.5f), glm::vec3(1.5f, 3.0f, -4.0f), wood)); // Pilar izq lateral
+    objects.push_back(new Rock(glm::vec3(0.5f, 0.3f, -1.5f), glm::vec3(4.0f, 0.31f, -5.0f), polishedRock)); // Piso
+    objects.push_back(new Wood(glm::vec3(3.0f, 0.3f, -4.5f), glm::vec3(3.5f, 3.6f, -5.0f), wood)); // Pilar esquina fondo der
+    objects.push_back(new Wood(glm::vec3(2.5f, 0.3f, -4.5f), glm::vec3(3.0f, 0.8f, -5.0f), wood)); // cuadro atras
+    objects.push_back(new Wood(glm::vec3(3.0f, 0.3f, -4.5f), glm::vec3(3.5f, 2.0f, -4.0f), wood)); // cuadro lat derecho
+
+
+    objects.push_back(new Cultivation(glm::vec3(5.0f, 0.3f, -1.5f), glm::vec3(5.5f, 0.31f, -5.0f), cultivation)); // Cultivo
+    objects.push_back(new Cultivation(glm::vec3(6.0f, 0.3f, -1.5f), glm::vec3(6.5f, 0.31f, -5.0f), cultivation)); // Cultivo
+    objects.push_back(new Cultivation(glm::vec3(7.0f, 0.3f, -1.5f), glm::vec3(7.5f, 0.31f, -5.0f), cultivation)); // Cultivo
+
+    objects.push_back(new Rock(glm::vec3(-2.0f, 0.3f, -3.0f), glm::vec3(-1.5f, 4.0f, -3.5f), rock)); // altar pilar
+    objects.push_back(new Cube(glm::vec3(-2.5f, 0.3f, -3.0f), glm::vec3(-2.0f, 0.31f, -3.5f), gold)); // Alfombra iz
+    objects.push_back(new Cube(glm::vec3(-2.0f, 0.3f, -2.5f), glm::vec3(-1.5f, 0.31f, -3.0f), gold)); // Alfombra fron
+    objects.push_back(new Cube(glm::vec3(-1.5f, 0.3f, -3.0f), glm::vec3(-1.0f, 0.31f, -3.5f), gold)); // Alfombra der
+    objects.push_back(new Cube(glm::vec3(-2.0f, 0.3f, -3.5f), glm::vec3(-1.5f, 0.31f, -4.0f), gold)); // Alfombra fron
+    
 }
 
 void render() {
@@ -239,7 +281,13 @@ int main(int argc, char* argv[]) {
     ImageLoader::loadImage("grass", "../assets/grama.jpg", 800.0f, 800.0f);
     ImageLoader::loadImage("ground", "../assets/tierra.jpg", 626.0f, 433.0f);
     ImageLoader::loadImage("wood", "../assets/madera.jpg", 608.0f, 608.0f);
+    ImageLoader::loadImage("rock", "../assets/piedra.jpg", 512.0f, 512.0f);
+    ImageLoader::loadImage("cultivation", "../assets/arado.jpg", 600.0f, 618.0f);
+    ImageLoader::loadImage("upSky", "../assets/sky.jpg", 1280.0f, 768.0f);
+    ImageLoader::loadImage("sideSky", "../assets/sideOcean.jpg", 1280.0f, 768.0f);
+    ImageLoader::loadImage("ocean", "../assets/ocean.jpg", 1280.0f, 768.0f);
 
+    camera.reset();
 
     bool running = true;
     SDL_Event event;
@@ -314,7 +362,7 @@ int main(int argc, char* argv[]) {
         // Calculate and display FPS
         if (SDL_GetTicks() - currentTime >= 1000) {
             currentTime = SDL_GetTicks();
-            std::string title = "Hello World - FPS: " + std::to_string(frameCount);
+            std::string title = "Casa en construcción - FPS: " + std::to_string(frameCount);
             SDL_SetWindowTitle(window, title.c_str());
             frameCount = 0;
         }
