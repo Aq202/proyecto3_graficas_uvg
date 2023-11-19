@@ -14,7 +14,7 @@ public:
   {
 
     glm::vec3 minBound(-100.0f, -50.0f, 100.0f);
-    glm::vec3 maxBound(100.0f, 100.0f, -100.0f);
+    glm::vec3 maxBound(100.0f, 70.0f, -100.0f);
 
     glm::vec3 invRayDir = 1.0f / rayDirection;
 

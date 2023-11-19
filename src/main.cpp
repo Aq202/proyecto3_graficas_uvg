@@ -313,12 +313,10 @@ int main(int argc, char* argv[]) {
                         camera.rotate(0.0f, 1.0f);
                         break;
                     case SDLK_LEFT:
-                        print("left");
-                        camera.rotate(-1.0f, 0.0f);
+                        camera.rotate(1.0f, 0.0f);
                         break;
                     case SDLK_RIGHT:
-                        print("right");
-                        camera.rotate(1.0f, 0.0f);
+                        camera.rotate(-1.0f, 0.0f);
                         break;
 
                     case SDLK_w:
@@ -341,6 +339,9 @@ int main(int argc, char* argv[]) {
                         break;
                     case SDLK_r:
                         camera.reset();
+                        break;
+                    case SDLK_t:
+                        camera.lookBack();
                         break;
                  }
             }
