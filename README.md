@@ -16,3 +16,6 @@ aradas para cultivos.
 | ![Resultado final](result/5.png) |
 
 ### Video demostración:
+
+https://github.com/Aq202/proyecto3_graficas_uvg/assets/67699784/70bffe2c-fa51-4fff-b2ce-e83cac3d00d2
+
